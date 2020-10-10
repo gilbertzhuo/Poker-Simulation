@@ -93,7 +93,7 @@ public:
             //(Was thinking of using dictionary but felt unnecessary since sorted)
             if (hand[0] % 13 == 0 && hand[1] % 13 == 9 && hand[2] % 13 == 10 && hand[3] % 13 == 11 && hand[4] % 13 == 12)
             {
-                cout << "ROYAL FLUSH!!" << endl;
+                cout << "ROYAL FLUSH !!" << endl;
                 //Rare case of 2 or more royal flush the superior suit wins
                 return 1000 + (hand[0] / 13);
             }
@@ -122,19 +122,25 @@ public:
             return 800;
         }
 
-        if (umap.size() == 2 && unique_suits.size() >= 3)
+        if (unique_suits.size() >= 3)
         {
             //Full house
-            if ((umap[*unique_suits.begin()] == 3 || umap[*unique_suits.begin()] == 2))
+            if (umap.size() == 2 && ((umap[*unique_suits.begin()] == 3 || umap[*unique_suits.begin()] == 2)))
             {
                 cout << "FULL HOUSE" << endl;
                 return 700;
             }
             //Three of a kind
-            else
+            else if (umap.size() == 3)
             {
-                cout << "THREE OF A KIND" << endl;
-                return 400;
+                for (auto i = unique_suits.begin(); i != unique_suits.end(); ++i)
+                {
+                    if (umap[*i] == 3)
+                    {
+                        cout << "THREE OF A KIND" << endl;
+                        return 400;
+                    }
+                }
             }
         }
 
@@ -155,14 +161,12 @@ public:
                 }
             }
         }
-
         //Two pair
         if (umap.size() == 3)
         {
             cout << "TWO PAIR" << endl;
             return 300;
         }
-
         //Pair
         if (umap.size() == 4)
         {
@@ -171,6 +175,7 @@ public:
         }
 
         //High Card
+        cout << "HIGH CARD" << endl;
         return hand.back();
     }
     Cards()
@@ -189,7 +194,7 @@ int main()
     // user a;
     // a.hands = c.distribute();
     // c.show(a.hands);
-    vector<int> ccc = {5, 15, 2, 3, 4};
+    vector<int> ccc = {4, 17, 6, 16, 2};
     cout << c.checkScore(ccc);
 
     return 0;

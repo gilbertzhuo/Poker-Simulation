@@ -1,27 +1,24 @@
-##COMPILE
-g++ -o main main.cpp Cards.cpp
+# POKER SIMULATOR
 
-#RUN
-main.exe
+# COMPILE
 
-#WIN CONDITION#
-1.Royal Flush
--POINTS 1000 + Highest Card
-2.Straight Flush
--POINTS 900 + Highest Card
-3.Four of a kind
--POINTS 800 + Highest Card
-4.Full house
--POINTS 700 + Highest Card
-5.Flush
--POINTS 600 + Highest Card
-6.Straight
--POINTS 500 + Highest Card
-7.Three of a kind
--POINTS 400 + Highest Card
-8.Two pair
--POINTS 300 + Highest Card
-9.Pair
--POINTS 200 + Highest Card
-10.High Card
--Highest Card
+> g++ -o main main.cpp Cards.cpp
+
+# RUN
+
+> main.exe
+
+# WIN CONDITION
+
+| CARD RANKING    | PINTS                      |
+| --------------- | -------------------------- |
+| Royal Flush     | POINTS 1000 + Highest Card |
+| Straight Flush  | POINTS 900 + Highest Card  |
+| Four of a Kind  | 800 + Highest Card         |
+| Full House      | 700 + Highest Card         |
+| FLush           | 600 + Highest Card         |
+| Straight        | 500 + Highest Card         |
+| Three of a kind | 400 + Highest Card         |
+| Two pair        | 300 + Highest Card         |
+| Pair            | 200 + Highest Card         |
+| High Card       | Highest Card               |

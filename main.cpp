@@ -5,11 +5,14 @@
 #include <string>
 #include <time.h>
 #include <unordered_set>
+#include <thread>
+#include <mutex>
 using namespace std;
 
 class Cards
 {
 private:
+    mutex m;
     int count = 0;
     const string cardType[4] = {"CLUBS", "DIAMONDS", "HEARTS", "SPADES"};
     const string cardRef[13] = {"ACE", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
@@ -38,8 +41,10 @@ public:
         //Only return hands with the deck has more than 5 cards left
         if (count <= 46)
         {
+            m.lock();
             vector<int> hand(deck.begin() + count, deck.begin() + count + 5);
             count += 6;
+            m.unlock();
             return hand;
         }
         return {};
@@ -52,13 +57,16 @@ public:
     }
     void show(vector<int> hand)
     {
+        m.lock();
         int size = hand.size();
         for (int i = 0; i < size; ++i)
         {
             int suits = hand[i] / 13;
             int num = hand[i] % 13;
-            cout << cardType[suits] << " " << cardRef[num] << endl;
+            cout << cardType[suits] << " " << cardRef[num] << " ";
         }
+        cout << endl;
+        m.unlock();
     }
 
     //Check Score
@@ -165,12 +173,14 @@ public:
         if (umap.size() == 3)
         {
             cout << "TWO PAIR" << endl;
+            //Highest pair wins
             return 300;
         }
         //Pair
         if (umap.size() == 4)
         {
             cout << "PAIR" << endl;
+            //Highest pair wins
             return 200;
         }
 
@@ -185,17 +195,43 @@ public:
 };
 struct user
 {
-    vector<int> hands;
+    string name;
+    vector<int> hand;
     int score = 0;
 };
+
+void thread_task(Cards &c, user &a)
+{
+    a.hand = c.distribute();
+}
+
 int main()
 {
-    Cards c;
-    // user a;
-    // a.hands = c.distribute();
-    // c.show(a.hands);
-    vector<int> ccc = {4, 17, 6, 16, 2};
-    cout << c.checkScore(ccc);
-
+    //Initialize a deck
+    Cards card;
+    user a = {"Gilbert"};
+    user b = {"player_b"};
+    user c = {"player_c"};
+    user d = {"player_d"};
+    thread player_a(thread_task, ref(card), ref(a));
+    thread player_b(thread_task, ref(card), ref(b));
+    thread player_c(thread_task, ref(card), ref(c));
+    thread player_d(thread_task, ref(card), ref(d));
+    player_a.join();
+    player_b.join();
+    player_c.join();
+    player_d.join();
+    cout << a.name << endl;
+    card.show(a.hand);
+    cout << card.checkScore(a.hand) << endl;
+    cout << b.name << endl;
+    card.show(b.hand);
+    cout << card.checkScore(b.hand) << endl;
+    cout << c.name << endl;
+    card.show(c.hand);
+    cout << card.checkScore(c.hand) << endl;
+    cout << d.name << endl;
+    card.show(d.hand);
+    cout << card.checkScore(d.hand) << endl;
     return 0;
 }

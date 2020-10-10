@@ -16,7 +16,7 @@ struct user
 };
 
 void thread_task(Cards &c, user &a);
-void player_stats(vector<user> &players);
+void player_stats(vector<user> &players, Cards &c);
 void winner(vector<user> &champion);
 
 int main()
@@ -40,7 +40,7 @@ int main()
         //Store the user data into vector
         vector<user> players = {a, b, c, d};
         //Output the names and the cards
-        player_stats(players);
+        player_stats(players, card);
         //Find out the winner
         winner(players);
         //Swap a new deck
@@ -66,7 +66,7 @@ void thread_task(Cards &c, user &a)
     //Check Card ranking
     a.state = c.checkScore(a.hand).second;
 }
-void player_stats(vector<user> &players)
+void player_stats(vector<user> &players, Cards &c)
 {
     int size = players.size();
     for (int i = 0; i < size; ++i)
@@ -75,7 +75,10 @@ void player_stats(vector<user> &players)
         cout << "------------------\n"
              << players[i].name << "\n"
              << players[i].score << "\n"
-             << players[i].state << endl;
+             << players[i].state << " \n"
+             << endl;
+        c.show(players[i].hand);
+        cout << "\n";
     }
 }
 void winner(vector<user> &champion)

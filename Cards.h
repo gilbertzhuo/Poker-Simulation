@@ -23,7 +23,7 @@ public:
     //Reset the deck and shuffle
     void reset();
     //Turns numeric numbers into  cardType and number
-    // void show(vector<int> hand);
+    void show(vector<int> hand);
     //Check Score
     pair<int, string> checkScore(vector<int> hand);
     Cards()

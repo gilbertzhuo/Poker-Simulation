@@ -153,16 +153,16 @@ pair<int, string> Cards::checkScore(vector<int> hand)
     return make_pair(hand.back(), "HIGH CARD");
 }
 
-// void Cards::show(vector<int> hand)
-// {
-//     m.lock();
-//     int size = hand.size();
-//     for (int i = 0; i < size; ++i)
-//     {
-//         int suits = hand[i] / 13;
-//         int num = hand[i] % 13;
-//         cout << cardType[suits] << " " << cardRef[num] << " ";
-//     }
-//     cout << endl;
-//     m.unlock();
-// }
+void Cards::show(vector<int> hand)
+{
+    m.lock();
+    int size = hand.size();
+    for (int i = 0; i < size; ++i)
+    {
+        int suits = hand[i] / 13;
+        int num = hand[i] % 13;
+        cout << cardType[suits] << " " << cardRef[num] << " ";
+    }
+    cout << endl;
+    m.unlock();
+}

@@ -1,8 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <unordered_map>
 #include <string>
 #include <time.h>
+#include <unordered_set>
 using namespace std;
 
 class Cards
@@ -48,55 +50,147 @@ public:
         count = 0;
         shuffle();
     }
-    void show(vector<int> hands)
+    void show(vector<int> hand)
     {
-        int size = hands.size();
+        int size = hand.size();
         for (int i = 0; i < size; ++i)
         {
-            int suits = hands[i] / 13;
-            int num = hands[i] % 13;
+            int suits = hand[i] / 13;
+            int num = hand[i] % 13;
             cout << cardType[suits] << " " << cardRef[num] << endl;
         }
     }
 
-    //Check Win
-    int checkWin(vector<int> hand)
+    //Check Score
+    int checkScore(vector<int> hand)
     {
+        int size = hand.size();
+        //Empty hand
+        if (size == 0)
+        {
+            return 0;
+        }
         sort(hand.begin(), hand.end());
 
-        //Royal flush
+        // int suits = hand[0] / 13;
+        // int num = hand[0] % 13;
+        //Unique hands
+        unordered_set<int> unique_suits;
+        for (int i = 0; i < hand.size(); ++i)
+        {
+            unique_suits.insert(hand[i] / 13);
+        }
+        unordered_map<int, int> umap;
+        //Store card frequency into dictionary
+        for (int i = 0; i < size; ++i)
+        {
+            umap[hand[i] % 13]++;
+        }
 
-        //Straight flush
+        if (unique_suits.size() == 1)
+        {
+            //Royal flush
+            //(Was thinking of using dictionary but felt unnecessary since sorted)
+            if (hand[0] % 13 == 0 && hand[1] % 13 == 9 && hand[2] % 13 == 10 && hand[3] % 13 == 11 && hand[4] % 13 == 12)
+            {
+                cout << "ROYAL FLUSH!!" << endl;
+                //Rare case of 2 or more royal flush the superior suit wins
+                return 1000 + (hand[0] / 13);
+            }
+            //Straight flush
+            for (int i = 1; i < size; ++i)
+            {
+                if ((hand[i] % 13) - 1 != (hand[i - 1] % 13))
+                {
+                    //Normal Flush
+                    cout << "FLUSH" << endl;
+                    return 600;
+                }
+                if (i == (size - 1))
+                {
+                    cout << "STRAIGHT FLUSH" << endl;
+                    //Rare case of 2 or more straight flush the superior suit wins
+                    return 900 + (hand[0] / 13);
+                }
+            }
+        }
 
         //Four of a kind
+        if (umap.size() == 2 && unique_suits.size() == 4)
+        {
+            cout << "FOUR OF A KIND" << endl;
+            return 800;
+        }
 
-        //Full house
-
-        //Flush
+        if (umap.size() == 2 && unique_suits.size() >= 3)
+        {
+            //Full house
+            if ((umap[*unique_suits.begin()] == 3 || umap[*unique_suits.begin()] == 2))
+            {
+                cout << "FULL HOUSE" << endl;
+                return 700;
+            }
+            //Three of a kind
+            else
+            {
+                cout << "THREE OF A KIND" << endl;
+                return 400;
+            }
+        }
 
         //Straight
-
-        //Three of a kind
+        //ALL UNIQUE
+        if (umap.size() == 5)
+        {
+            for (int i = 1; i < size; ++i)
+            {
+                if ((hand[i] % 13) - 1 != (hand[i - 1] % 13))
+                {
+                    break;
+                }
+                if (i == (size - 1))
+                {
+                    cout << "STRAIGHT" << endl;
+                    return 500;
+                }
+            }
+        }
 
         //Two pair
+        if (umap.size() == 3)
+        {
+            cout << "TWO PAIR" << endl;
+            return 300;
+        }
 
         //Pair
+        if (umap.size() == 4)
+        {
+            cout << "PAIR" << endl;
+            return 200;
+        }
 
         //High Card
-        return 0;
+        return hand.back();
     }
     Cards()
     {
         shuffle();
     }
 };
-
+struct user
+{
+    vector<int> hands;
+    int score = 0;
+};
 int main()
 {
     Cards c;
-    vector<int> hands;
-    hands = c.distribute();
-    c.show(hands);
+    // user a;
+    // a.hands = c.distribute();
+    // c.show(a.hands);
+    vector<int> ccc = {5, 15, 2, 3, 4};
+    cout << c.checkScore(ccc);
 
     return 0;
 }

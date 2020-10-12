@@ -47,6 +47,7 @@ pair<int, string> Cards::checkScore(vector<int> hand)
 {
 
     int size = hand.size();
+    int total = 0;
     //Empty hand
     if (size == 0)
     {
@@ -139,14 +140,31 @@ pair<int, string> Cards::checkScore(vector<int> hand)
     //Two pair
     if (umap.size() == 3)
     {
+        for (int i = 0; i < hand.size(); ++i)
+        {
+            if (umap[hand[i]] == 2)
+            {
+                total += hand[i];
+            }
+        }
+        total += 300;
+
         //Highest pair wins
-        return make_pair(300 + (hand.back() % 13), "TWO PAIR");
+        return make_pair(total, "TWO PAIR");
     }
     //Pair
     if (umap.size() == 4)
     {
         //Highest pair wins
-        return make_pair(200 + (hand.back() % 13), "PAIR");
+        for (int i = 0; i < hand.size(); ++i)
+        {
+            if (umap[hand[i]] == 2)
+            {
+                total = hand[i] + 200;
+                break;
+            }
+        }
+        return make_pair(total, "PAIR");
     }
 
     //High Card
@@ -161,7 +179,7 @@ void Cards::show(vector<int> hand)
     {
         int suits = hand[i] / 13;
         int num = hand[i] % 13;
-        cout << cardType[suits] << " " << cardRef[num] << " ";
+        cout << cardType[suits] << "-" << cardRef[num] << " ";
     }
     cout << endl;
     m.unlock();

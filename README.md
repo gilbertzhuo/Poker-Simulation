@@ -10,13 +10,13 @@
 
 # WIN CONDITION
 
-| CARD RANKING    | PINTS               |
+| CARD RANKING    | POINTS              |
 | --------------- | ------------------- |
 | Royal Flush     | 1000 + Highest Card |
 | Straight Flush  | 900 + Highest Card  |
 | Four of a Kind  | 800 + Highest Card  |
 | Full House      | 700 + Highest Card  |
-| FLush           | 600 + Highest Card  |
+| Flush           | 600 + Highest Card  |
 | Straight        | 500 + Highest Card  |
 | Three of a kind | 400 + Highest Card  |
 | Two pair        | 300 + Highest Card  |

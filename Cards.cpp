@@ -111,12 +111,18 @@ pair<int, string> Cards::checkScore(vector<int> hand)
         //Three of a kind
         else if (umap.size() == 3)
         {
-            for (auto i = unique_suits.begin(); i != unique_suits.end(); ++i)
+            for (int i = 0; i < hand.size(); ++i)
             {
-                if (umap[*i] == 3)
+                if (umap[hand[i] % 13] == 3)
                 {
-                    return make_pair(400 + (hand.back() % 13), "THREE OF A KIND");
+                    total += hand[i] % 13;
+                    break;
                 }
+            }
+            if (total != 0)
+            {
+                total += 400;
+                return make_pair(total, "THREE OF A KIND");
             }
         }
     }
@@ -142,9 +148,9 @@ pair<int, string> Cards::checkScore(vector<int> hand)
     {
         for (int i = 0; i < hand.size(); ++i)
         {
-            if (umap[hand[i]] == 2)
+            if (umap[hand[i] % 13] == 2)
             {
-                total += hand[i];
+                total += hand[i] % 13;
             }
         }
         total += 300;
@@ -158,9 +164,9 @@ pair<int, string> Cards::checkScore(vector<int> hand)
         //Highest pair wins
         for (int i = 0; i < hand.size(); ++i)
         {
-            if (umap[hand[i]] == 2)
+            if (umap[hand[i] % 13] == 2)
             {
-                total = hand[i] + 200;
+                total = hand[i] % 13 + 200;
                 break;
             }
         }
